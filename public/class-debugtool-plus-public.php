@@ -140,7 +140,7 @@ class Debugtool_Plus_Public {
 
 	public function add_script_attributes( $tag, $handle ) {
 		if ( 'debugtool' === $handle ) {
-			$tag = str_replace( ' src', ' async src', $tag );
+			$tag = str_replace( ' src', ' defer src', $tag );
 		}
 		return $tag;
 	}
