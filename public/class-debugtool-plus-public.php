@@ -111,13 +111,12 @@ class Debugtool_Plus_Public {
 			$show_to_roles[] = 'subscriber';
 		}
 
-
 		//print_r( $show_to_roles );
 		// Get Current User ID and Roles
 		$current_user_id = get_current_user_id();
 		$user_meta       = get_userdata( $current_user_id );
 		$user_roles      = $user_meta->roles;
-		
+
 		foreach ( $user_roles as $role ) {
 			if ( in_array( $role, $show_to_roles, true ) ) {
 				$enqueue = true;
@@ -126,16 +125,23 @@ class Debugtool_Plus_Public {
 
 		$debugtool_user_ids = $options['debugtool_user_ids'] ?? '';
 		$debugtool_user_ids = explode( ',', $debugtool_user_ids );
-		
-		
+
 		// Only enqueue the script if the user role should be shown the debugtool OR the USER has been
 		// Added to the array of users to be shown the debugtool.
 		if ( in_array( (string) $current_user_id, $debugtool_user_ids, true ) ) {
 			$enqueue = true;
 		}
 
-		if( ! empty( $enqueue ) ) {
+		if ( ! empty( $enqueue ) ) {
 			wp_enqueue_script( 'debugtool' );
 		}
+	}
+
+
+	public function add_script_attributes( $tag, $handle ) {
+		if ( 'debugtool' === $handle ) {
+			$tag = str_replace( ' src', ' async src', $tag );
+		}
+		return $tag;
 	}
 }
